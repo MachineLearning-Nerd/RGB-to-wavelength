@@ -1,0 +1,5 @@
+DS_Store
+.venv
+.vscode
+minimumdis.py
+wavelength2rgb.py
