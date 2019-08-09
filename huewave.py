@@ -49,24 +49,24 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
     return (R, G, B)
 
 if __name__ == "__main__":
-    image = np.zeros([200 , 371, 3])
-    for j in range(200):
-        for i in range(380,700):
-            (R,G,B) = wavelength_to_rgb(i)
-            i = i-380
-            image[j][i][0] = R * 255
-            image[j][i][1] = G * 255
-            image[j][i][2] = B * 255
+    # image = np.zeros([200 , 371, 3])
+    # for j in range(200):
+        # for i in range(380,700):
+            # (R,G,B) = wavelength_to_rgb(i)
+            # i = i-380
+            # image[j][i][0] = R * 255
+            # image[j][i][1] = G * 255
+            # image[j][i][2] = B * 255
 
 
-    image = cv2.imread('color_img.jpg', 1)
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+    # image = cv2.imread('color_img.jpg', 1)
+    # image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
 
-    h = image[:,:,0]
-    print("This is the hue's unique values")
-    print(np.unique(h))
+    # h = image[:,:,0]
+    # print("This is the hue's unique values")
+    # print(np.unique(h))
 
-    image = cv2.imread('Inputs/sand.jpg')
+    image = cv2.imread('Inputs/green.png')
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     # Intensity is the average of all the three elements
     plt.imshow(image)
@@ -86,13 +86,15 @@ if __name__ == "__main__":
     # This is the variable to multiply with the matrix.
     # at 700 the hue is 0
     # at 470 the hue is 120
-    mul = ((470-680)/120)
+    mul = ((470-750)/120)
     # mul = ((380-750)/(345))
     L = np.array(h)
     NewImage = np.zeros(L.shape)
     NewImage = L
-    NewImage[np.where(L>345)] = 360 - L[np.where(L>345)]
+    NewImage[np.where(L>172)] = 180 - L[np.where(L>172)]
+    NewImage[np.where(L>180)] = 360 - L[np.where(L>180)]
     L = NewImage
+    print(len(np.where(L==np.unique(L)[1])))
     print(np.unique(L))
     L =  mul * L + 700
 
@@ -109,11 +111,13 @@ if __name__ == "__main__":
     u_wavelength = np.unique(sort_L)
     print(u_wavelength)
     max_intensity = []
+    print(u_wavelength)
     for i in u_wavelength:
         itemindex = np.where(sort_L==i)
         #maxintensity = max(sort_I[itemindex])
+        print(len(sort_I[itemindex]))
         maxintensity = np.mean(sort_I[itemindex])
-
+        print(maxintensity)
         max_intensity.append(maxintensity)
 
     barlist=plt.bar(u_wavelength, max_intensity)
